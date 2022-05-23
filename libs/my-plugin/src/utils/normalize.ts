@@ -46,7 +46,7 @@ export function normalizeBuildOptions(
     sourceRoot,
     projectRoot,
     main: '',
-    outputPath: `dist/${projectRoot}`,
+    outputPath: `${projectRoot}/build`,
     tsConfig: '{}',
     fileReplacements: [],
     assets: [],

@@ -7,36 +7,41 @@ export default async function runExecutor(
   rawOptions: BuildNodeBuilderOptions,
   context: ExecutorContext
 ) {
-  console.log('===================🦄 PLUGIN EXECUTOR 🚀===================');
-  console.log('------------------------- START ---------------------------');
-  console.log('===========================================================');
+  console.debug('===================🦄 PLUGIN EXECUTOR 🚀===================');
+  console.debug('------------------------- START ---------------------------');
+  console.debug('===========================================================');
 
-  console.log('PROJECT NAME : ');
-  console.log(context.projectName);
-  console.log('----------------------------------------------------');
+  console.debug('OUTPUT PATH : ');
+  const outputPath: string = context.target.options.outputPath;
+  console.debug(outputPath);
+  console.debug('----------------------------------------------------');
+
+  console.debug('PROJECT NAME : ');
+  console.debug(context.projectName);
+  console.debug('----------------------------------------------------');
 
   const { sourceRoot, root } = context.workspace.projects[context.projectName];
 
-  console.log('SOURCE ROOT : ');
-  console.log(sourceRoot);
-  console.log('----------------------------------------------------');
+  console.debug('SOURCE ROOT : ');
+  console.debug(sourceRoot);
+  console.debug('----------------------------------------------------');
 
-  console.log('ROOT : ');
-  console.log(root);
-  console.log('----------------------------------------------------');
+  console.debug('ROOT : ');
+  console.debug(root);
+  console.debug('----------------------------------------------------');
 
   const projGraph = readCachedProjectGraph();
-  console.log('PROJECT GRAPH : ');
-  console.log(projGraph);
-  console.log('----------------------------------------------------');
+  console.debug('PROJECT GRAPH : ');
+  console.debug(projGraph);
+  console.debug('----------------------------------------------------');
 
-  console.log('RAW OPTIONS : ');
-  console.log(rawOptions);
-  console.log('----------------------------------------------------');
+  console.debug('RAW OPTIONS : ');
+  console.debug(rawOptions);
+  console.debug('----------------------------------------------------');
 
-  console.log('CONTEXT ROOT: ');
-  console.log(context.root);
-  console.log('----------------------------------------------------');
+  console.debug('CONTEXT ROOT: ');
+  console.debug(context.root);
+  console.debug('----------------------------------------------------');
 
   const options = normalizeBuildOptions(
     rawOptions,
@@ -45,15 +50,15 @@ export default async function runExecutor(
     root
   );
 
-  console.log('OPTIONS: ');
-  console.log(options);
-  console.log('----------------------------------------------------');
+  console.debug('OPTIONS: ');
+  console.debug(options);
+  console.debug('----------------------------------------------------');
 
-  generatePackageJson(context.projectName, projGraph, options);
+  generatePackageJson(context.projectName, projGraph, options, outputPath);
 
-  console.log('===========================================================');
-  console.log('------------------------- END -----------------------------');
-  console.log('===========================================================');
+  console.debug('===========================================================');
+  console.debug('------------------------- END -----------------------------');
+  console.debug('===========================================================');
 
   return {
     success: true,

@@ -1,94 +1,67 @@
+Step 1: start the Nx repo.
+
+```
+npx create-nx-workspace my-workspace --appName=demo --preset=next --style=scss --nx-cloud
+
+npm install -g @nrwl/cli
+
+npx nx serve demo
+```
+
+You can also create new pages by running the generate command :
+
+```
+npx nx generate page About --project=demo --style=scss
+```
+
+The same thing goes for new components.
+
+```
+npx nx g component PartyPopper --project=demo  --style=scss
+```
+
+Step 2: Build and deploy
+
+```
+heroku login
+heroku apps:create next-nx
+// heroku apps:create keystone-nx
+```
+
+```
+npx nx g @nrwl/workspace:run-commands deploy --project keystone --command "cd dist/apps/keystone && cp ../../../apps/keystone/Dockerfile . && heroku container:login && heroku container:push web -a keystone-nx && heroku container:release web -a keystone-nx"
 
 
-# MyWorkspace
+npx nx g @nrwl/workspace:run-commands deploy --project demo --command "cd dist/apps/demo && cp ../../../apps/demo/Dockerfile . && heroku container:login && heroku container:push web -a next-nx && heroku container:release web -a next-nx"
+```
 
-This project was generated using [Nx](https://nx.dev).
+```
+npx nx build demo
+npx nx deploy demo
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+//npx nx build keystone-app
+//npx nx deploy keystone-app
+```
 
-🔎 **Smart, Fast and Extensible Build System**
+go to https://next-nx.herokuapp.com/.
 
-## Adding capabilities to your workspace
+step 3: Publish Library
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+npx nx g @nrwl/js:lib components-bis --publishable --importPath="@dots/components-bis"
+npx nx publish components-bis --ver=1.0.1 --tag=hello
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+step 4: create custom plugins:
 
-Below are our core plugins:
+```
+npx create-nx-plugin dots --pluginName keystone
+npm i -D @nrwl/nx-plugin
+nx g @nrwl/nx-plugin:plugin keystone --importPath=@dots/keystone
+```
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+experimentale :
+$ npx nx generate @nrwl/nx-plugin:plugin keyston-extension --no-interactive
+$ npx nx build keystone-extension
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+$ npx nx build keystone --skip-nx-cache
 
-## Generate an application
-
-Run `nx g @nrwl/react:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@my-workspace/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+https://youtu.be/ptpEBhHwl6Q?t=1225

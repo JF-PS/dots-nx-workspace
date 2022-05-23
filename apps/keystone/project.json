@@ -16,9 +16,10 @@
       "executor": "./dist/libs/my-plugin:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/next-app"
+        "outputPath": "apps/test/yollo/truc"
       }
     },
+
     "serve": {
       "executor": "@nrwl/web:dev-server",
       "options": {
@@ -30,6 +31,7 @@
         }
       }
     },
+
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
@@ -43,6 +45,15 @@
       "options": {
         "jestConfig": "apps/keystone/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "cd apps && cp keystone/Dockerfile . && heroku container:login && heroku container:push web -a keystone-nx && heroku container:release web -a keystone-nx"
+        ]
       }
     }
   }

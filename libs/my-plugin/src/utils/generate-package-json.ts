@@ -7,16 +7,11 @@ import { createPackageJson } from '@nrwl/workspace/src/utilities/create-package-
 export function generatePackageJson(
   projectName: string,
   graph: ProjectGraph,
-  options: BuildNodeBuilderOptions
+  options: BuildNodeBuilderOptions,
+  outputPath: string
 ) {
-  console.log('=========== OPTIONS GENERATES ===============');
-  console.log(options);
-  console.log('==========================');
   const packageJson = createPackageJson(projectName, graph, options);
   packageJson.main = packageJson.main ?? options.outputFileName;
   delete packageJson.devDependencies;
-  console.log('==========================');
-  console.log(options.outputPath);
-  console.log('==========================');
-  writeJsonFile(`${options.outputPath}/package.json`, packageJson);
+  writeJsonFile(`${outputPath}/package.json`, packageJson);
 }
